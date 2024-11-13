@@ -1,4 +1,4 @@
-import store from "app/store/store";
+import store from "01-app/store/store";
 
 export type RootState = ReturnType<typeof store.getState>;
 

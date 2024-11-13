@@ -1,3 +1,32 @@
 .wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.allChecked {
+  display: flex;
+  background-color: green;
+  width: fit-content;
+  cursor: pointer;
+  user-select: none;
+}
+
+.columns {
+  display: flex;
+}
+
+.column {
+  background-color: green;
+  border: 2px solid;
+  flex-grow: 1;
+  flex-shrink: 1;
+  &:first-child{
+    flex-basis: 5% !important;
+    flex-grow: 0;
+  }
+
+}
+
+.rows {
 
 }
