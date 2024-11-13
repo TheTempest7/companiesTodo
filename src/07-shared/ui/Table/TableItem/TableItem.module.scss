@@ -1,0 +1,22 @@
+.wrapper {
+background-color: red;
+  display: flex;
+
+}
+
+.inputWrapper{
+  background-color: blue;
+  border: 2px solid;
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  &:first-child {
+    flex-basis: 5% !important;
+    flex-grow: 0;
+  }
+  input[type='text'] {
+    width: 100%;
+}
+}
+
+

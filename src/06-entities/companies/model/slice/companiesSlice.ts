@@ -1,17 +1,58 @@
-import { createSlice } from "@reduxjs/toolkit";
-
-interface ICompaniesState {
-  companies: Record<string, string>[];
-}
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { v4 as uuidv4 } from "uuid";
+import { ICompaniesState } from "../types.ts";
+import { IChangeTableRowData } from "07-shared/types/componentsTypes.ts";
 
 export const initialState: ICompaniesState = {
-  companies: [],
+  companies: [
+    {
+      id: uuidv4(),
+      checked: false,
+      name: "Apple",
+      address: "One Apple Park Way, Cupertino, California",
+    },
+    {
+      id: uuidv4(),
+      checked: false,
+      name: "Microsoft",
+      address: "Redmond, Washington, United States",
+    },
+    {
+      id: uuidv4(),
+      checked: false,
+      name: "Google",
+      address: "Mountain View, California, United States",
+    },
+    {
+      id: uuidv4(),
+      checked: false,
+      name: "Adept",
+      address: "Prospekt Gagarina, 27, Pomeshch. 204, Nizhny Novgorod",
+    },
+  ],
 };
 
-export const companiesSlice = createSlice<unknown>({
+export const companiesSlice = createSlice({
   name: "companies",
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    changeCompanyData: (
+      state,
+      { payload: { name, value, id } }: PayloadAction<IChangeTableRowData>,
+    ) => {
+      const currentIndex = state.companies.findIndex(
+        (company) => company.id === id,
+      );
+      // @ts-expect-error next line
+      state.companies[currentIndex][name] = value;
+    },
+    setAllCheckedStatus: (state, { payload }: PayloadAction<boolean>) => {
+      state.companies = state.companies.map((company) => ({
+        ...company,
+        checked: payload,
+      }));
+    },
+  },
 });
 
 export const companiesReducer = companiesSlice.reducer;
