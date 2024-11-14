@@ -2,6 +2,8 @@ import { useState } from "react";
 import { companiesActions, INewCompany } from "06-entities/companies";
 import { useAppDispatch } from "07-shared/lib/hooks.ts";
 
+import s from "./AddCompany.module.scss";
+
 export const AddCompany = () => {
   const dispatch = useAppDispatch();
 
@@ -18,12 +20,11 @@ export const AddCompany = () => {
   };
 
   return (
-    <div>
+    <div className={s.wrapper}>
       <h2>New Company Addition</h2>
       <div>
         <p>Company Name</p>
         <input
-          style={{ background: "azul" }}
           type={"text"}
           value={newCompanyData?.name}
           onChange={(e) =>

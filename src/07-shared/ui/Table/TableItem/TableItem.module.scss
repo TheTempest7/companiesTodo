@@ -1,15 +1,12 @@
 .wrapper {
-  background-color: red;
   display: flex;
 }
 
-.checked {
-  background-color: yellow;
-}
-
 .inputWrapper{
+  padding: 2px 8px;
   background-color: inherit;
-  border: 2px solid;
+  border-left: 2px solid;
+  border-bottom: 2px solid;
   flex-grow: 1;
   display: flex;
   justify-content: center;
@@ -17,10 +14,20 @@
     flex-basis: 5% !important;
     flex-grow: 0;
   }
+  &:last-child {
+    border-right: 2px solid;
+  }
   input {
     background-color: inherit;
   }
   input[type='text'] {
     width: 100%;
 }
+}
+
+.checked {
+  background-color: #6c757d50;
+  input {
+    background-color: #6c757d00;
+  }
 }

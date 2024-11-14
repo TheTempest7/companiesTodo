@@ -1,17 +1,38 @@
 .wrapper {
+  height: 20px;
   display: flex;
+  align-items: center;
 }
 
 .allChecked {
   display: flex;
-  background-color: green;
+  align-items: center;
   width: fit-content;
   cursor: pointer;
   user-select: none;
+  p {
+    margin-left: 5px;
+  }
 }
 
 .actions {
   flex: 1 1 auto;
   display: flex;
   justify-content: flex-end;
+
+  button {
+    height: 29px;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s;
+  }
+  button:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  }
 }

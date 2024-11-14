@@ -74,7 +74,7 @@ export const Table = <T extends Record<string, any>>({
               className={s.column}
               style={{ flexBasis: columnsWidth }}
             >
-              {column}
+              <span>{column}</span>
             </div>
           );
         })}
@@ -90,6 +90,7 @@ export const Table = <T extends Record<string, any>>({
             />
           );
         })}
+        {!rowsData.length && <p className={s.noRows}>Empty Table</p>}
       </div>
     </div>
   );
