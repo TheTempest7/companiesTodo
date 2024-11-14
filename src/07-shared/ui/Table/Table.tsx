@@ -3,6 +3,7 @@ import { TableItem } from "./TableItem/TableItem.tsx";
 import { useEffect, useMemo, useState } from "react";
 import { IChangeTableRowData } from "../../types/componentsTypes.ts";
 import { TableHeader } from "./TableHeader/TableHeader.tsx";
+import { useInView } from "react-intersection-observer";
 
 interface ITableProps<T> {
   /* rowsData - данные для заполнения строк таблицы  */
@@ -36,6 +37,10 @@ export const Table = <T extends Record<string, any>>({
   setAllCheckboxes,
   deleteRowsHandler,
 }: ITableProps<T>) => {
+  const { ref, inView, entry } = useInView({
+    threshold: 0,
+  });
+
   const [allChecked, setAllChecked] = useState(false);
 
   const allUnCheckedCondition = rowsData.every((row) => row.checked === false);
@@ -65,6 +70,8 @@ export const Table = <T extends Record<string, any>>({
         allChecked={allChecked}
         deleteRowsHandler={deleteRowsHandler}
         anyCheckedCondition={anyCheckedCondition}
+        firstRowInView={inView}
+        referenceEntry={entry}
       />
       <div className={s.columns}>
         {columns.map((column, index) => {
@@ -80,13 +87,14 @@ export const Table = <T extends Record<string, any>>({
         })}
       </div>
       <div className={s.rows}>
-        {rowsData.map((row) => {
+        {rowsData.map((row, index) => {
           return (
             <TableItem
               rowData={row}
               key={row.id}
               rowChangeHandler={rowChangeHandler}
               rowsWidth={columnsWidth}
+              reference={!index ? ref : null}
             />
           );
         })}

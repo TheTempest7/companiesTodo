@@ -8,17 +8,22 @@ interface TableItemProps {
   rowChangeHandler: (val: IChangeTableRowData) => void;
   key: string;
   rowsWidth: string;
+  reference?: ((node?: Element | null) => void) | null;
 }
 
 export const TableItem = ({
   rowData,
   rowChangeHandler,
   rowsWidth,
+  reference,
 }: TableItemProps) => {
   const rowItems = convertObjectToArray(rowData);
 
   return (
-    <div className={classNames(s.wrapper, { [s.checked]: rowData.checked })}>
+    <div
+      className={classNames(s.wrapper, { [s.checked]: rowData.checked })}
+      ref={reference}
+    >
       {rowItems.slice(1, rowItems.length).map(({ value, name }, index) => {
         if (name === "checked") {
           return (
