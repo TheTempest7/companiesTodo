@@ -90,6 +90,7 @@ export const Table = <T extends Record<string, any>>({
             />
           );
         })}
+        {!rowsData.length && <p className={s.noRows}>Empty Table</p>}
       </div>
     </div>
   );
