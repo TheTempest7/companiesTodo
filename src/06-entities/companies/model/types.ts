@@ -8,3 +8,8 @@ export interface ICompany {
 export interface ICompaniesState {
   companies: ICompany[];
 }
+
+export interface INewCompany {
+  name: string;
+  address: string;
+}

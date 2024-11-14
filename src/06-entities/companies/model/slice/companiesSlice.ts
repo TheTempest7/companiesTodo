@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
-import { ICompaniesState } from "../types.ts";
+import { ICompaniesState, INewCompany } from "../types.ts";
 import { IChangeTableRowData } from "07-shared/types/componentsTypes.ts";
 
 export const initialState: ICompaniesState = {
@@ -51,6 +51,20 @@ export const companiesSlice = createSlice({
         ...company,
         checked: payload,
       }));
+    },
+    addNewCompany: (state, { payload }: PayloadAction<INewCompany>) => {
+      const newCompanyId = uuidv4();
+      state.companies.unshift({
+        id: newCompanyId,
+        checked: false,
+        name: payload.name,
+        address: payload.address,
+      });
+    },
+    deleteAllCheckedCompanies: (state) => {
+      state.companies = state.companies.filter(
+        (company) => company.checked === false,
+      );
     },
   },
 });

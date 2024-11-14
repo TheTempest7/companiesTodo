@@ -1,0 +1,17 @@
+.wrapper {
+  display: flex;
+}
+
+.allChecked {
+  display: flex;
+  background-color: green;
+  width: fit-content;
+  cursor: pointer;
+  user-select: none;
+}
+
+.actions {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: flex-end;
+}
