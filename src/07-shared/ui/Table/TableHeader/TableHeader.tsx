@@ -5,6 +5,11 @@ interface TableHeaderProps {
   allChecked: boolean;
   deleteRowsHandler: () => void;
   anyCheckedCondition: boolean;
+  firstRowInView: boolean;
+  /**
+   * referenceEntry - объект с данными об наблюдаемои элементе
+   */
+  referenceEntry: IntersectionObserverEntry;
 }
 
 export const TableHeader = ({
@@ -12,6 +17,8 @@ export const TableHeader = ({
   allChecked,
   deleteRowsHandler,
   anyCheckedCondition,
+  firstRowInView,
+  referenceEntry,
 }: TableHeaderProps) => {
   return (
     <div className={s.wrapper}>
@@ -27,6 +34,22 @@ export const TableHeader = ({
       {anyCheckedCondition && (
         <div className={s.actions}>
           <button onClick={deleteRowsHandler}>Delete All Checked</button>
+        </div>
+      )}
+      {!firstRowInView && (
+        <div className={s.scrollButtonWrapper}>
+          {" "}
+          <button
+            onClick={() => {
+              referenceEntry.target.scrollIntoView({
+                behavior: "smooth",
+                block: "end",
+                inline: "nearest",
+              });
+            }}
+          >
+            Scroll Up
+          </button>{" "}
         </div>
       )}
     </div>
