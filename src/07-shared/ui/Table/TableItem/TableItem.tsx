@@ -1,6 +1,7 @@
 import s from "./TableItem.module.scss";
 import { convertObjectToArray } from "07-shared/lib/utils.ts";
 import { IChangeTableRowData } from "../../../types/componentsTypes.ts";
+import classNames from "classnames";
 
 interface TableItemProps {
   rowData: Record<string, string | Uint8Array>;
@@ -17,7 +18,7 @@ export const TableItem = ({
   const rowItems = convertObjectToArray(rowData);
 
   return (
-    <div className={s.wrapper}>
+    <div className={classNames(s.wrapper, { [s.checked]: rowData.checked })}>
       {rowItems.slice(1, rowItems.length).map(({ value, name }, index) => {
         if (name === "checked") {
           return (

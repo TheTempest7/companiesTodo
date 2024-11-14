@@ -12,10 +12,16 @@ export const CompaniesRowValueChange = () => {
   const onAllCheckedValueChange = (val: boolean) => {
     dispatch(companiesActions.setAllCheckedStatus(val));
   };
+
+  const onAllCheckedValuesDelete = () => {
+    dispatch(companiesActions.deleteAllCheckedCompanies());
+  };
+
   return (
     <CompaniesTable
       onTableRowValueChange={onTableRowValueChange}
       onAllCheckedValueChange={onAllCheckedValueChange}
+      onAllCheckedValuesDelete={onAllCheckedValuesDelete}
     />
   );
 };

@@ -1,11 +1,14 @@
 .wrapper {
-background-color: red;
+  background-color: red;
   display: flex;
+}
 
+.checked {
+  background-color: yellow;
 }
 
 .inputWrapper{
-  background-color: blue;
+  background-color: inherit;
   border: 2px solid;
   flex-grow: 1;
   display: flex;
@@ -14,9 +17,10 @@ background-color: red;
     flex-basis: 5% !important;
     flex-grow: 0;
   }
+  input {
+    background-color: inherit;
+  }
   input[type='text'] {
     width: 100%;
 }
 }
-
-

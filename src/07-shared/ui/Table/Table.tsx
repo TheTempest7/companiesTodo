@@ -2,10 +2,14 @@ import s from "./Table.module.scss";
 import { TableItem } from "./TableItem/TableItem.tsx";
 import { useEffect, useMemo, useState } from "react";
 import { IChangeTableRowData } from "../../types/componentsTypes.ts";
+import { TableHeader } from "./TableHeader/TableHeader.tsx";
 
 interface ITableProps<T> {
   /* rowsData - данные для заполнения строк таблицы  */
   rowsData: T[];
+
+  /* columns - колоники для таблицы */
+  columns: string[];
 
   /**
    * rowChangeHandler функция изменяющая значение в ячейки таблицы
@@ -18,19 +22,25 @@ interface ITableProps<T> {
    * @param val - новое значение чекбокса
    */
   setAllCheckboxes: (val: boolean) => void;
+
+  /**
+   * deleteRowsHandler - функция срабатывающая на кнопку delete
+   */
+  deleteRowsHandler: () => void;
 }
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const Table = <T extends Record<string, any>>({
   rowsData,
+  columns,
   rowChangeHandler,
   setAllCheckboxes,
+  deleteRowsHandler,
 }: ITableProps<T>) => {
   const [allChecked, setAllChecked] = useState(false);
 
   const allUnCheckedCondition = rowsData.every((row) => row.checked === false);
   const allCheckedCondition = rowsData.every((row) => row.checked === true);
-
-  const columns = Object.keys(rowsData[0]).slice(1, rowsData[0].length);
+  const anyCheckedCondition = rowsData.some((row) => row.checked === true);
 
   const columnsWidth = useMemo(
     () => 95 / (columns.length - 1) + "%",
@@ -44,19 +54,18 @@ export const Table = <T extends Record<string, any>>({
 
   useEffect(() => {
     if (allUnCheckedCondition || !allCheckedCondition) setAllChecked(false);
-    if (allCheckedCondition) setAllChecked(true);
+    if (allCheckedCondition && rowsData.length) setAllChecked(true);
+    if (!rowsData.length) setAllChecked(false);
   }, [rowsData, allUnCheckedCondition, allCheckedCondition]);
 
   return (
     <div className={s.wrapper}>
-      <div className={s.allChecked} onClick={allCheckboxesHandler}>
-        <input
-          type={"checkbox"}
-          checked={allChecked}
-          onChange={allCheckboxesHandler}
-        />
-        <p>Выделить всё</p>
-      </div>
+      <TableHeader
+        allCheckboxesHandler={allCheckboxesHandler}
+        allChecked={allChecked}
+        deleteRowsHandler={deleteRowsHandler}
+        anyCheckedCondition={anyCheckedCondition}
+      />
       <div className={s.columns}>
         {columns.map((column, index) => {
           return (
