@@ -8,7 +8,7 @@ interface TableItemProps {
   rowChangeHandler: (val: IChangeTableRowData) => void;
   key: string;
   rowsWidth: string;
-  reference: (node?: Element | null) => void;
+  reference?: ((node?: Element | null) => void) | null;
 }
 
 export const TableItem = ({

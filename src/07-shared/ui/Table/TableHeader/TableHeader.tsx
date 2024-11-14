@@ -9,7 +9,7 @@ interface TableHeaderProps {
   /**
    * referenceEntry - объект с данными об наблюдаемои элементе
    */
-  referenceEntry: IntersectionObserverEntry;
+  referenceEntry?: IntersectionObserverEntry;
 }
 
 export const TableHeader = ({
@@ -41,7 +41,7 @@ export const TableHeader = ({
           {" "}
           <button
             onClick={() => {
-              referenceEntry.target.scrollIntoView({
+              referenceEntry?.target.scrollIntoView({
                 behavior: "smooth",
                 block: "end",
                 inline: "nearest",
