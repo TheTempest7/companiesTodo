@@ -74,7 +74,7 @@ export const Table = <T extends Record<string, any>>({
               className={s.column}
               style={{ flexBasis: columnsWidth }}
             >
-              {column}
+              <span>{column}</span>
             </div>
           );
         })}

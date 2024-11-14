@@ -1,0 +1,48 @@
+.wrapper {
+  padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  &>*:not(:last-child) {
+    margin-bottom: 20px;
+  }
+
+  p {
+    margin-bottom: 5px;
+  }
+
+  h2 {
+    font-size: 30px;
+  }
+
+  input {
+    border: 2px solid #007bff;
+    padding: 10px;
+    border-radius: 5px;
+    width: 100%;
+    font-size: 16px;
+    transition: border-color 0.3s;
+  }
+
+  input:focus {
+    border-color: #0056b3;
+    outline: none;
+  }
+
+  button {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s;
+  }
+  button:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  }
+}
