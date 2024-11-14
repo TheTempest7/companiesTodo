@@ -1,6 +1,6 @@
 import s from "./Table.module.scss";
 import { TableItem } from "./TableItem/TableItem.tsx";
-import { useEffect, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { IChangeTableRowData } from "../../types/componentsTypes.ts";
 import { TableHeader } from "./TableHeader/TableHeader.tsx";
 import { useInView } from "react-intersection-observer";
@@ -29,77 +29,85 @@ interface ITableProps<T> {
    */
   deleteRowsHandler: () => void;
 }
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const Table = <T extends Record<string, any>>({
-  rowsData,
-  columns,
-  rowChangeHandler,
-  setAllCheckboxes,
-  deleteRowsHandler,
-}: ITableProps<T>) => {
-  const { ref, inView, entry } = useInView({
-    threshold: 0,
-  });
+interface ITableRowRequiredFields extends Record<string, any> {
+  id: string | Uint8Array;
+  checked: boolean;
+}
 
-  const [allChecked, setAllChecked] = useState(false);
+export const Table = memo(
+  <T extends ITableRowRequiredFields>({
+    rowsData,
+    columns,
+    rowChangeHandler,
+    setAllCheckboxes,
+    deleteRowsHandler,
+  }: ITableProps<T>) => {
+    const { ref, inView, entry } = useInView({
+      threshold: 0,
+    });
 
-  const allUnCheckedCondition = rowsData.every((row) => row.checked === false);
-  const allCheckedCondition = rowsData.every((row) => row.checked === true);
-  const anyCheckedCondition = rowsData.some((row) => row.checked === true);
+    const [allChecked, setAllChecked] = useState(false);
 
-  const columnsWidth = useMemo(
-    () => 95 / (columns.length - 1) + "%",
-    [columns],
-  );
+    const allUnCheckedCondition = rowsData.every((row) => !row.checked);
+    const allCheckedCondition = rowsData.every((row) => row.checked);
+    const anyCheckedCondition = rowsData.some((row) => row.checked);
 
-  const allCheckboxesHandler = () => {
-    setAllChecked((prev) => !prev);
-    setAllCheckboxes(!allChecked);
-  };
+    const columnsWidth = useMemo(
+      () => 95 / (columns.length - 1) + "%",
+      [columns],
+    );
 
-  useEffect(() => {
-    if (allUnCheckedCondition || !allCheckedCondition) setAllChecked(false);
-    if (allCheckedCondition && rowsData.length) setAllChecked(true);
-    if (!rowsData.length) setAllChecked(false);
-  }, [rowsData, allUnCheckedCondition, allCheckedCondition]);
+    const allCheckboxesHandler = useCallback(() => {
+      setAllChecked((prev) => !prev);
+      setAllCheckboxes(!allChecked);
+    }, [setAllChecked, setAllCheckboxes, allChecked]);
 
-  return (
-    <div className={s.wrapper}>
-      <TableHeader
-        allCheckboxesHandler={allCheckboxesHandler}
-        allChecked={allChecked}
-        deleteRowsHandler={deleteRowsHandler}
-        anyCheckedCondition={anyCheckedCondition}
-        firstRowInView={inView}
-        referenceEntry={entry}
-      />
-      <div className={s.columns}>
-        {columns.map((column, index) => {
-          return (
-            <div
-              key={index}
-              className={s.column}
-              style={{ flexBasis: columnsWidth }}
-            >
-              <span>{column}</span>
-            </div>
-          );
-        })}
+    useEffect(() => {
+      if (allUnCheckedCondition || !allCheckedCondition) setAllChecked(false);
+      if (allCheckedCondition && rowsData.length) setAllChecked(true);
+      if (!rowsData.length) setAllChecked(false);
+    }, [rowsData, allUnCheckedCondition, allCheckedCondition]);
+
+    return (
+      <div className={s.wrapper}>
+        <TableHeader
+          allCheckboxesHandler={allCheckboxesHandler}
+          allChecked={allChecked}
+          deleteRowsHandler={deleteRowsHandler}
+          anyCheckedCondition={anyCheckedCondition}
+          firstRowInView={inView}
+          referenceEntry={entry}
+        />
+        <div className={s.columns}>
+          {columns.map((column, index) => {
+            return (
+              <div
+                key={index}
+                className={s.column}
+                style={{ flexBasis: columnsWidth }}
+              >
+                <span>{column}</span>
+              </div>
+            );
+          })}
+        </div>
+        <div className={s.rows}>
+          {rowsData.map((row, index) => {
+            return (
+              <TableItem
+                rowData={row}
+                key={row.id.toString()}
+                rowChangeHandler={rowChangeHandler}
+                rowsWidth={columnsWidth}
+                reference={!index ? ref : null}
+              />
+            );
+          })}
+          {!rowsData.length && <p className={s.noRows}>Empty Table</p>}
+        </div>
       </div>
-      <div className={s.rows}>
-        {rowsData.map((row, index) => {
-          return (
-            <TableItem
-              rowData={row}
-              key={row.id}
-              rowChangeHandler={rowChangeHandler}
-              rowsWidth={columnsWidth}
-              reference={!index ? ref : null}
-            />
-          );
-        })}
-        {!rowsData.length && <p className={s.noRows}>Empty Table</p>}
-      </div>
-    </div>
-  );
-};
+    );
+  },
+);

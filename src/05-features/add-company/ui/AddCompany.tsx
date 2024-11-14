@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { companiesActions, INewCompany } from "06-entities/companies";
 import { useAppDispatch } from "07-shared/lib/hooks.ts";
 
@@ -18,6 +18,18 @@ export const AddCompany = () => {
       setNewCompanyData({ name: "", address: "" });
     }
   };
+
+  const onEnterPressHandler = (e) => {
+    if (e.code === "Enter") {
+      onCompanyAddingHandler();
+    }
+  };
+
+  useEffect(() => {
+    addEventListener("keypress", onEnterPressHandler);
+
+    return () => removeEventListener("keypress", onEnterPressHandler);
+  }, [newCompanyData]);
 
   return (
     <div className={s.wrapper}>
