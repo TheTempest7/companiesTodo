@@ -1,4 +1,4 @@
-import { Table } from "07-shared/ui/Table/Table.tsx";
+import Table from "07-shared/ui/Table/Table.tsx";
 import { useAppSelector } from "07-shared/lib/hooks.ts";
 
 import { getCompanies } from "../model/selectors/selectors.tsx";
