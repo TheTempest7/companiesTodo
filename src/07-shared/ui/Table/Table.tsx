@@ -1,7 +1,10 @@
 import s from "./Table.module.scss";
 import { TableItem } from "./TableItem/TableItem.tsx";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
-import { IChangeTableRowData } from "../../types/componentsTypes.ts";
+import {
+  IChangeTableRowData,
+  ITableRowRequiredFields,
+} from "../../types/componentsTypes.ts";
 import { TableHeader } from "./TableHeader/TableHeader.tsx";
 import { useInView } from "react-intersection-observer";
 
@@ -28,12 +31,6 @@ interface ITableProps<T> {
    * deleteRowsHandler - функция срабатывающая на кнопку delete
    */
   deleteRowsHandler: () => void;
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-interface ITableRowRequiredFields extends Record<string, any> {
-  id: string | Uint8Array;
-  checked: boolean;
 }
 
 export const Table = memo(
