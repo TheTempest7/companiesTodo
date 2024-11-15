@@ -1,8 +1,10 @@
 import Table from "07-shared/ui/Table/Table.tsx";
 import { useAppSelector } from "07-shared/lib/hooks.ts";
+import { IChangeTableRowData } from "07-shared/types/componentsTypes.ts";
 
 import { getCompanies } from "../model/selectors/selectors.tsx";
-import { IChangeTableRowData } from "07-shared/types/componentsTypes.ts";
+
+import s from "./CompaniesTable.module.scss";
 
 interface CompaniesTableProps {
   onTableRowValueChange: (val: IChangeTableRowData) => void;
@@ -17,10 +19,10 @@ export const CompaniesTable = ({
 }: CompaniesTableProps) => {
   const companies = useAppSelector(getCompanies);
 
-  const columns = ["checked", "name", "address"];
+  const columns = ["checked", "company", "address"];
 
   return (
-    <div>
+    <div className={s.wrapper}>
       <Table
         rowsData={companies}
         columns={columns}

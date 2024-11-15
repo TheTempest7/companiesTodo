@@ -6,6 +6,7 @@ export default defineConfig({
   build: {
     sourcemap: false,
   },
+  server: { open: true },
   resolve: {
     alias: {
       "01-app": "/src/01-app",
