@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { companiesActions, INewCompany } from "06-entities/companies";
 import { useAppDispatch } from "07-shared/lib/hooks.ts";
 
@@ -12,12 +12,27 @@ export const AddCompany = () => {
     address: "",
   });
 
-  const onCompanyAddingHandler = () => {
+  const onCompanyAddingHandler = useCallback(() => {
     if (newCompanyData.name.trim() && newCompanyData.address.trim()) {
       dispatch(companiesActions.addNewCompany(newCompanyData));
       setNewCompanyData({ name: "", address: "" });
     }
-  };
+  }, [dispatch, newCompanyData]);
+
+  const onEnterPressHandler = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.code === "Enter") {
+        onCompanyAddingHandler();
+      }
+    },
+    [onCompanyAddingHandler],
+  );
+
+  useEffect(() => {
+    addEventListener("keypress", onEnterPressHandler);
+
+    return () => removeEventListener("keypress", onEnterPressHandler);
+  }, [newCompanyData, onEnterPressHandler]);
 
   return (
     <div className={s.wrapper}>

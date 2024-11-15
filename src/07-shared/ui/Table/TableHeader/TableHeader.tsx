@@ -1,4 +1,5 @@
 import s from "./TableHeader.module.scss";
+import { memo } from "react";
 
 interface TableHeaderProps {
   allCheckboxesHandler: () => void;
@@ -12,46 +13,48 @@ interface TableHeaderProps {
   referenceEntry?: IntersectionObserverEntry;
 }
 
-export const TableHeader = ({
-  allCheckboxesHandler,
-  allChecked,
-  deleteRowsHandler,
-  anyCheckedCondition,
-  firstRowInView,
-  referenceEntry,
-}: TableHeaderProps) => {
-  return (
-    <div className={s.wrapper}>
-      <div className={s.allChecked} onClick={allCheckboxesHandler}>
-        <input
-          type={"checkbox"}
-          checked={allChecked}
-          onChange={allCheckboxesHandler}
-        />
-        <p>Pick Out All</p>
-      </div>
+export const TableHeader = memo(
+  ({
+    allCheckboxesHandler,
+    allChecked,
+    deleteRowsHandler,
+    anyCheckedCondition,
+    firstRowInView,
+    referenceEntry,
+  }: TableHeaderProps) => {
+    return (
+      <div className={s.wrapper}>
+        <div className={s.allChecked} onClick={allCheckboxesHandler}>
+          <input
+            type={"checkbox"}
+            checked={allChecked}
+            onChange={allCheckboxesHandler}
+          />
+          <p>Pick Out All</p>
+        </div>
 
-      {anyCheckedCondition && (
-        <div className={s.actions}>
-          <button onClick={deleteRowsHandler}>Delete All Checked</button>
-        </div>
-      )}
-      {!firstRowInView && (
-        <div className={s.scrollButtonWrapper}>
-          {" "}
-          <button
-            onClick={() => {
-              referenceEntry?.target.scrollIntoView({
-                behavior: "smooth",
-                block: "end",
-                inline: "nearest",
-              });
-            }}
-          >
-            Scroll Up
-          </button>{" "}
-        </div>
-      )}
-    </div>
-  );
-};
+        {anyCheckedCondition && (
+          <div className={s.actions}>
+            <button onClick={deleteRowsHandler}>Delete All Checked</button>
+          </div>
+        )}
+        {!firstRowInView && (
+          <div className={s.scrollButtonWrapper}>
+            {" "}
+            <button
+              onClick={() => {
+                referenceEntry?.target.scrollIntoView({
+                  behavior: "smooth",
+                  block: "end",
+                  inline: "nearest",
+                });
+              }}
+            >
+              Scroll Up
+            </button>{" "}
+          </div>
+        )}
+      </div>
+    );
+  },
+);

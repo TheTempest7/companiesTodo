@@ -1,7 +1,10 @@
 import s from "./Table.module.scss";
 import { TableItem } from "./TableItem/TableItem.tsx";
-import { useEffect, useMemo, useState } from "react";
-import { IChangeTableRowData } from "../../types/componentsTypes.ts";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import {
+  IChangeTableRowData,
+  ITableRowRequiredFields,
+} from "../../types/componentsTypes.ts";
 import { TableHeader } from "./TableHeader/TableHeader.tsx";
 import { useInView } from "react-intersection-observer";
 
@@ -29,8 +32,8 @@ interface ITableProps<T> {
    */
   deleteRowsHandler: () => void;
 }
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const Table = <T extends Record<string, any>>({
+
+export const Table = <T extends ITableRowRequiredFields>({
   rowsData,
   columns,
   rowChangeHandler,
@@ -43,19 +46,19 @@ export const Table = <T extends Record<string, any>>({
 
   const [allChecked, setAllChecked] = useState(false);
 
-  const allUnCheckedCondition = rowsData.every((row) => row.checked === false);
-  const allCheckedCondition = rowsData.every((row) => row.checked === true);
-  const anyCheckedCondition = rowsData.some((row) => row.checked === true);
+  const allUnCheckedCondition = rowsData.every((row) => !row.checked);
+  const allCheckedCondition = rowsData.every((row) => row.checked);
+  const anyCheckedCondition = rowsData.some((row) => row.checked);
 
   const columnsWidth = useMemo(
     () => 95 / (columns.length - 1) + "%",
     [columns],
   );
 
-  const allCheckboxesHandler = () => {
+  const allCheckboxesHandler = useCallback(() => {
     setAllChecked((prev) => !prev);
     setAllCheckboxes(!allChecked);
-  };
+  }, [setAllChecked, setAllCheckboxes, allChecked]);
 
   useEffect(() => {
     if (allUnCheckedCondition || !allCheckedCondition) setAllChecked(false);
@@ -91,7 +94,7 @@ export const Table = <T extends Record<string, any>>({
           return (
             <TableItem
               rowData={row}
-              key={row.id}
+              key={row.id.toString()}
               rowChangeHandler={rowChangeHandler}
               rowsWidth={columnsWidth}
               reference={!index ? ref : null}
@@ -103,3 +106,5 @@ export const Table = <T extends Record<string, any>>({
     </div>
   );
 };
+
+export default memo(Table) as typeof Table;

@@ -1,21 +1,28 @@
 import { companiesActions, CompaniesTable } from "06-entities/companies";
 import { useAppDispatch } from "07-shared/lib/hooks.ts";
 import { IChangeTableRowData } from "07-shared/types/componentsTypes.ts";
+import { useCallback } from "react";
 
 export const CompaniesRowValueChange = () => {
   const dispatch = useAppDispatch();
 
-  const onTableRowValueChange = ({ value, name, id }: IChangeTableRowData) => {
-    dispatch(companiesActions.changeCompanyData({ value, name, id }));
-  };
+  const onTableRowValueChange = useCallback(
+    ({ value, name, id }: IChangeTableRowData) => {
+      dispatch(companiesActions.changeCompanyData({ value, name, id }));
+    },
+    [dispatch],
+  );
 
-  const onAllCheckedValueChange = (val: boolean) => {
-    dispatch(companiesActions.setAllCheckedStatus(val));
-  };
+  const onAllCheckedValueChange = useCallback(
+    (val: boolean) => {
+      dispatch(companiesActions.setAllCheckedStatus(val));
+    },
+    [dispatch],
+  );
 
-  const onAllCheckedValuesDelete = () => {
+  const onAllCheckedValuesDelete = useCallback(() => {
     dispatch(companiesActions.deleteAllCheckedCompanies());
-  };
+  }, [dispatch]);
 
   return (
     <CompaniesTable
